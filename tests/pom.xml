@@ -17,6 +17,56 @@
   </properties>
 
   <profiles>
+    <!-- Creates the Marketplace screenshots (not a test): mvn verify -Pscreenshots -->
+    <profile>
+      <id>screenshots</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-surefire-plugin</artifactId>
+            <version>${tycho.version}</version>
+            <configuration>
+              <test>MarketplaceScreenshots</test>
+              <product>org.eclipse.platform.ide</product>
+              <systemProperties>
+                <screenshots.dir>${project.basedir}/../marketplace/screenshots</screenshots.dir>
+              </systemProperties>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <dependency-resolution>
+                <extraRequirements combine.children="append">
+                  <requirement>
+                    <type>eclipse-feature</type>
+                    <id>org.eclipse.platform</id>
+                    <versionRange>0.0.0</versionRange>
+                  </requirement>
+                  <requirement>
+                    <type>eclipse-plugin</type>
+                    <id>org.eclipse.wst.xml.ui</id>
+                    <versionRange>0.0.0</versionRange>
+                  </requirement>
+                  <requirement>
+                    <type>eclipse-plugin</type>
+                    <id>org.eclipse.wst.html.ui</id>
+                    <versionRange>0.0.0</versionRange>
+                  </requirement>
+                  <requirement>
+                    <type>eclipse-feature</type>
+                    <id>org.eclipse.wildwebdeveloper.feature</id>
+                    <versionRange>0.0.0</versionRange>
+                  </requirement>
+                </extraRequirements>
+              </dependency-resolution>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>macos</id>
       <activation><os><family>mac</family></os></activation>

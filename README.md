@@ -28,6 +28,12 @@ Which file types are supported depends on the plugins installed in your Eclipse.
 - Skips derived resources, output folders, `node_modules` and dot-files/-folders (`.git`, `.settings`, …).
 - Formatting via an editor briefly opens that editor in the background.
 
+![Format (incl. Subfolders) in the context menu of a folder](marketplace/screenshots/folder-menu.png)
+
+| Before | After |
+|---|---|
+| ![before](marketplace/screenshots/editor-before.png) | ![after](marketplace/screenshots/editor-after.png) |
+
 ## Install
 
 In Eclipse, choose *Help > Install New Software…* and use this update site:
@@ -54,6 +60,15 @@ Every push to `main` builds, tests and publishes the update site to GitHub Pages
 
 Import all projects via *File > Import > Existing Projects* into an Eclipse with PDE
 (“Eclipse IDE for RCP and RAP Developers”) and launch *Run As > Eclipse Application*.
+
+## Screenshots
+
+The images in `marketplace/screenshots` are generated with a real Eclipse (WTP and Wild Web Developer included)
+and a demo project:
+
+    mvn verify -Pscreenshots
+
+This opens an Eclipse window for a few seconds and needs the macOS permission for screen recording.
 
 ## License
 
