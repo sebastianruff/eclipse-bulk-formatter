@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Format incl. Subpackages
+Bundle-Name: Bulk Format (incl. Subfolders)
 Bundle-SymbolicName: io.github.sebastianruff.bulkformatter;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Sebastian Ruff
