@@ -28,6 +28,8 @@ Which file types are supported depends on the plugins installed in your Eclipse.
 - Skips derived resources, output folders, `node_modules` and dot-files/-folders (`.git`, `.settings`, …).
 - Formatting via an editor briefly opens that editor in the background.
 
+![Source > Format (incl. Subpackages) in the context menu of a package](marketplace/screenshots/package-source-menu.png)
+
 ![Format (incl. Subfolders) in the context menu of a folder](marketplace/screenshots/folder-menu.png)
 
 | Before | After |
@@ -63,7 +65,8 @@ Import all projects via *File > Import > Existing Projects* into an Eclipse with
 
 ## Screenshots
 
-The images in `marketplace/screenshots` are generated with a real Eclipse (WTP and Wild Web Developer included)
+Except for `package-source-menu.png` (taken by hand, since the Source submenu only opens on real input),
+the images in `marketplace/screenshots` are generated with a real Eclipse (WTP and Wild Web Developer included)
 and a demo project:
 
     mvn verify -Pscreenshots
