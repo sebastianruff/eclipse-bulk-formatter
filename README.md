@@ -29,8 +29,8 @@ Requires Maven 3.9+ and JDK 21+.
 
     mvn clean verify
 
-The update site is created in `io.github.sebastianruff.bulkformatter.site/target/repository`
-(zipped: `io.github.sebastianruff.bulkformatter.site/target/*.zip`).
+The update site is created in `site/target/repository`
+(zipped: `site/target/*.zip`).
 Every push to `main` builds, tests and publishes the update site to GitHub Pages.
 
 ## Development

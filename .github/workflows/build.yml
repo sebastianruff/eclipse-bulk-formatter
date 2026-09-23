@@ -24,13 +24,13 @@ jobs:
         run: xvfb-run --auto-servernum mvn -B clean verify
       - name: Prepare update site
         run: |
-          cp -r io.github.sebastianruff.bulkformatter.site/target/repository site
-          cp io.github.sebastianruff.bulkformatter.site/target/*.zip site/format-incl-subpackages.zip
-          cp .github/pages/index.html site/
+          cp -r site/target/repository _site
+          cp site/target/*.zip _site/format-incl-subpackages.zip
+          cp .github/pages/index.html _site/
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:
-          path: site
+          path: _site
 
   deploy:
     if: github.ref == 'refs/heads/main'

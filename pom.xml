@@ -28,10 +28,10 @@
   </properties>
 
   <modules>
-    <module>io.github.sebastianruff.bulkformatter</module>
-    <module>io.github.sebastianruff.bulkformatter.tests</module>
-    <module>io.github.sebastianruff.bulkformatter.feature</module>
-    <module>io.github.sebastianruff.bulkformatter.site</module>
+    <module>plugin</module>
+    <module>tests</module>
+    <module>feature</module>
+    <module>site</module>
   </modules>
 
   <repositories>
