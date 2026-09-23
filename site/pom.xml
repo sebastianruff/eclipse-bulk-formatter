@@ -12,11 +12,14 @@
   <packaging>eclipse-repository</packaging>
 
   <profiles>
-    <!-- PGP-signs the update site; active when the signing key is provided (CI). -->
+    <!--
+      PGP-signs the update site; active when an armored secret key file is given (CI):
+      mvn verify -Dsigning.keyFile=/path/to/key.asc, with the passphrase in env MAVEN_GPG_PASSPHRASE
+    -->
     <profile>
       <id>sign</id>
       <activation>
-        <property><name>env.MAVEN_GPG_KEY</name></property>
+        <property><name>signing.keyFile</name></property>
       </activation>
       <build>
         <plugins>
@@ -33,7 +36,7 @@
                 </goals>
                 <configuration>
                   <signer>bc</signer>
-                  <!-- key and passphrase come from MAVEN_GPG_KEY / MAVEN_GPG_PASSPHRASE -->
+                  <secretKeys>${signing.keyFile}</secretKeys>
                   <useAgent>false</useAgent>
                 </configuration>
               </execution>

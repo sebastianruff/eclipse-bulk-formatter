@@ -20,10 +20,16 @@ jobs:
           java-version: 21
           cache: maven
       - name: Build and test
-        # the UI tests need a display
-        run: xvfb-run --auto-servernum mvn -B clean verify
+        # the UI tests need a display; the update site is PGP-signed when the signing key secret is available
+        # (not on forks/PRs), see site/pom.xml
+        run: |
+          if [ -n "$MAVEN_GPG_KEY" ]; then
+            printf '%s\n' "$MAVEN_GPG_KEY" > "$RUNNER_TEMP/signing-key.asc"
+            SIGNING="-Dsigning.keyFile=$RUNNER_TEMP/signing-key.asc"
+          fi
+          xvfb-run --auto-servernum mvn -B clean verify $SIGNING
+          rm -f "$RUNNER_TEMP/signing-key.asc"
         env:
-          # PGP-signs the update site (see site/pom.xml); empty on forks/PRs, then the build is unsigned
           MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       - name: Prepare update site
