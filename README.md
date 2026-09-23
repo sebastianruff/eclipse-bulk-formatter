@@ -1,3 +1,5 @@
+<img src="marketplace/logo.png" width="96" align="right" alt="">
+
 # Format incl. Subpackages for Eclipse
 
 [![Build](https://github.com/sebastianruff/eclipse-bulk-formatter/actions/workflows/build.yml/badge.svg)](https://github.com/sebastianruff/eclipse-bulk-formatter/actions/workflows/build.yml)
@@ -19,7 +21,8 @@ In Eclipse, choose *Help > Install New Software…* and use this update site:
     https://sebastianruff.github.io/eclipse-bulk-formatter/
 
 Select “Format incl. Subpackages”, finish the wizard and restart Eclipse.
-The plugin is not signed, so Eclipse asks you to trust unsigned content during installation.
+The update site is PGP-signed. When Eclipse asks whether to trust the signing key, check that the
+fingerprint is `8FEA 6CD6 3AF8 D180 5DC8  9737 081E E7BE B9AC A451` ([signing-key.asc](signing-key.asc)).
 
 Requires Eclipse running on Java 21 or newer (built and tested against Eclipse 2026-06).
 

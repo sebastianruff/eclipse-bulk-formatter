@@ -22,11 +22,17 @@ jobs:
       - name: Build and test
         # the UI tests need a display
         run: xvfb-run --auto-servernum mvn -B clean verify
+        env:
+          # PGP-signs the update site (see site/pom.xml); empty on forks/PRs, then the build is unsigned
+          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
       - name: Prepare update site
         run: |
           cp -r site/target/repository _site
-          cp site/target/*.zip _site/format-incl-subpackages.zip
-          cp .github/pages/index.html _site/
+          # zip the signed repository (Tycho's own zip is created before signing)
+          (cd _site && zip -qr ../format-incl-subpackages.zip .)
+          mv format-incl-subpackages.zip _site/
+          cp .github/pages/index.html marketplace/logo.png signing-key.asc _site/
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:

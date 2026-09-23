@@ -10,4 +10,37 @@
   </parent>
   <artifactId>io.github.sebastianruff.bulkformatter.site</artifactId>
   <packaging>eclipse-repository</packaging>
+
+  <profiles>
+    <!-- PGP-signs the update site; active when the signing key is provided (CI). -->
+    <profile>
+      <id>sign</id>
+      <activation>
+        <property><name>env.MAVEN_GPG_KEY</name></property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-gpg-plugin</artifactId>
+            <version>${tycho.version}</version>
+            <executions>
+              <execution>
+                <id>pgpsigner</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>sign-p2-artifacts</goal>
+                </goals>
+                <configuration>
+                  <signer>bc</signer>
+                  <!-- key and passphrase come from MAVEN_GPG_KEY / MAVEN_GPG_PASSPHRASE -->
+                  <useAgent>false</useAgent>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
