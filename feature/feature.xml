@@ -2,11 +2,13 @@
 <feature
       id="io.github.sebastianruff.bulkformatter.feature"
       label="Format incl. Subpackages"
-      version="1.0.0.qualifier"
+      version="1.1.0.qualifier"
       provider-name="Sebastian Ruff">
 
    <description url="https://github.com/sebastianruff/eclipse-bulk-formatter">
-      Adds "Source > Format (incl. Subpackages)" to the context menu of Java packages.
+      Formats all files of a package, folder or project including subpackages and subfolders, each with
+      the formatter Eclipse would use for it (Java, XML, HTML, CSS, JSON, YAML, JavaScript, ...).
+      Adds "Source > Format (incl. Subpackages)" to packages and "Format (incl. Subfolders)" to folders and projects.
    </description>
 
    <copyright>

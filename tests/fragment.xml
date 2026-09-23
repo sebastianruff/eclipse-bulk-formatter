@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <!-- Test doubles: an editor with a formatter and an in-process language server with formatting. -->
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <content-type id="edtest" name="Editor Format Test" base-type="org.eclipse.core.runtime.text"
+            file-extensions="edtest" priority="high"/>
+      <content-type id="lsptest" name="LSP Format Test" base-type="org.eclipse.core.runtime.text"
+            file-extensions="lsptest" priority="high"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor id="io.github.sebastianruff.bulkformatter.tests.formatEditor" name="Uppercase Test Editor"
+            class="io.github.sebastianruff.bulkformatter.UppercaseTestEditor" default="true">
+         <contentTypeBinding contentTypeId="io.github.sebastianruff.bulkformatter.edtest"/>
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.lsp4e.languageServer">
+      <server id="io.github.sebastianruff.bulkformatter.tests.server" label="Trailing Whitespace Test Server"
+            class="io.github.sebastianruff.bulkformatter.TestLanguageServer$Connection" singleton="true"/>
+      <contentTypeMapping contentType="io.github.sebastianruff.bulkformatter.lsptest"
+            id="io.github.sebastianruff.bulkformatter.tests.server"/>
+   </extension>
+</fragment>

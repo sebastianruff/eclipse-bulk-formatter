@@ -3,18 +3,18 @@
 <plugin>
    <extension point="org.eclipse.ui.commands">
       <command
-            id="io.github.sebastianruff.bulkformatter.formatWithSubpackages"
-            name="Format (incl. Subpackages)"
-            description="Formats all Java files of the selected packages and their subpackages"
-            defaultHandler="io.github.sebastianruff.bulkformatter.FormatJavaFilesHandler">
+            id="io.github.sebastianruff.bulkformatter.formatAll"
+            name="Format (incl. Subfolders)"
+            description="Formats all files of the selection including subpackages and subfolders"
+            defaultHandler="io.github.sebastianruff.bulkformatter.FormatFilesHandler">
       </command>
    </extension>
 
    <extension point="org.eclipse.ui.menus">
-      <!-- Placed in the JDT "Source" submenu, right after "Format". -->
+      <!-- Packages: in the JDT "Source" submenu, right after "Format". -->
       <menuContribution locationURI="popup:org.eclipse.jdt.ui.source.menu?before=importGroup">
          <command
-               commandId="io.github.sebastianruff.bulkformatter.formatWithSubpackages"
+               commandId="io.github.sebastianruff.bulkformatter.formatAll"
                label="Format (incl. Subpackages)"
                style="push">
             <visibleWhen checkEnabled="false">
@@ -23,6 +23,33 @@
                      <count value="+"/>
                      <iterate operator="and">
                         <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+
+      <!-- Folders, source folders and projects (Package Explorer, Project Explorer, ...). -->
+      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command
+               commandId="io.github.sebastianruff.bulkformatter.formatAll"
+               label="Format (incl. Subfolders)"
+               style="push">
+            <visibleWhen checkEnabled="false">
+               <with variable="activeMenuSelection">
+                  <and>
+                     <count value="+"/>
+                     <iterate operator="and">
+                        <not>
+                           <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+                        </not>
+                        <adapt type="org.eclipse.core.resources.IResource">
+                           <or>
+                              <instanceof value="org.eclipse.core.resources.IFolder"/>
+                              <instanceof value="org.eclipse.core.resources.IProject"/>
+                           </or>
+                        </adapt>
                      </iterate>
                   </and>
                </with>

@@ -1,10 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Bulk Java Formatter Tests
-Bundle-SymbolicName: io.github.sebastianruff.bulkformatter.tests
-Bundle-Version: 1.0.0.qualifier
+Bundle-Name: Format incl. Subpackages Tests
+Bundle-SymbolicName: io.github.sebastianruff.bulkformatter.tests;singleton:=true
+Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Sebastian Ruff
 Fragment-Host: io.github.sebastianruff.bulkformatter
 Bundle-RequiredExecutionEnvironment: JavaSE-21
-Require-Bundle: org.eclipse.jdt.ui
+Require-Bundle: org.eclipse.jdt.ui,
+ org.eclipse.lsp4e,
+ org.eclipse.lsp4j,
+ org.eclipse.lsp4j.jsonrpc
 Import-Package: org.junit.jupiter.api;version="5.0.0"

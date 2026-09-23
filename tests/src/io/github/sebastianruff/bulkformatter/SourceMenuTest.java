@@ -5,20 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.charset.StandardCharsets;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.ui.IPackagesViewPart;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.swt.SWT;
@@ -36,39 +25,28 @@ import org.junit.jupiter.api.Test;
 class SourceMenuTest {
 
 	private static final String UGLY = "package %s; public class %s{int   x;}";
+	private static final String SUBFOLDERS_LABEL = "Format (incl. Subfolders)";
 	private static final String SUBPACKAGES_LABEL = "Format (incl. Subpackages)";
 
-	private IJavaProject project;
-	private IPackageFragmentRoot src;
+	private TestProject project;
 
 	@BeforeEach
 	void setUp() throws CoreException {
-		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject("menu");
-		p.create(null);
-		p.open(null);
-		IProjectDescription description = p.getDescription();
-		description.setNatureIds(new String[] { JavaCore.NATURE_ID });
-		p.setDescription(description, null);
-		IFolder folder = p.getFolder("src");
-		folder.create(true, true, null);
-		project = JavaCore.create(p);
-		project.setRawClasspath(new IClasspathEntry[] { JavaCore.newSourceEntry(folder.getFullPath()) },
-				p.getFullPath().append("bin"), null);
-		src = project.getPackageFragmentRoot(folder);
-		for (String[] cls : new String[][] { { "com.acme", "A" }, { "com.acme.sub", "C" } }) {
-			src.createPackageFragment(cls[0], true, null).createCompilationUnit(cls[1] + ".java",
-					String.format(UGLY, cls[0], cls[1]), true, null);
-		}
+		project = new TestProject("menu");
+		project.create("src/com/acme/A.java", String.format(UGLY, "com.acme", "A"));
+		project.create("src/com/acme/sub/C.java", String.format(UGLY, "com.acme.sub", "C"));
+		project.create("src/com/acme/sub/notes.edtest", "sub");
+		project.create("web/page.edtest", "page");
 	}
 
 	@AfterEach
 	void tearDown() throws CoreException {
-		project.getProject().delete(true, true, null);
+		project.delete();
 	}
 
 	@Test
 	void subpackagesEntryIsInSourceMenuAndFormatsSubpackages() throws Exception {
-		Menu contextMenu = openContextMenuOn(src.getPackageFragment("com.acme"));
+		Menu contextMenu = openContextMenuOn(project.src.getPackageFragment("com.acme"));
 
 		MenuItem source = find(contextMenu, "Source");
 		assertNotNull(source, "Source submenu missing: " + labels(contextMenu));
@@ -84,17 +62,29 @@ class SourceMenuTest {
 
 		entry.notifyListeners(SWT.Selection, new Event());
 		waitForJobs();
-		assertTrue(read("com/acme/sub/C.java").contains("\tint x;"), read("com/acme/sub/C.java"));
-		assertTrue(read("com/acme/A.java").contains("\tint x;"), read("com/acme/A.java"));
+		assertTrue(project.read("src/com/acme/sub/C.java").contains("\tint x;"), project.read("src/com/acme/sub/C.java"));
+		assertTrue(project.read("src/com/acme/A.java").contains("\tint x;"), project.read("src/com/acme/A.java"));
+		assertEquals("SUB", project.read("src/com/acme/sub/notes.edtest"));
+	}
+
+	@Test
+	void subfoldersEntryFormatsPlainFolders() throws Exception {
+		Menu contextMenu = openContextMenuOn(project.project().getFolder("web"));
+		MenuItem entry = find(contextMenu, SUBFOLDERS_LABEL);
+		assertNotNull(entry, "entry missing: " + labels(contextMenu));
+		entry.notifyListeners(SWT.Selection, new Event());
+		waitForJobs();
+		assertEquals("PAGE", project.read("web/page.edtest"));
 	}
 
 	@Test
 	void subpackagesEntryIsHiddenForSourceFolders() throws Exception {
-		Menu contextMenu = openContextMenuOn(src);
+		Menu contextMenu = openContextMenuOn(project.src);
 		MenuItem source = find(contextMenu, "Source");
 		assertNotNull(source, "Source submenu missing: " + labels(contextMenu));
 		show(source.getMenu());
 		assertNull(find(source.getMenu(), SUBPACKAGES_LABEL), labels(source.getMenu()));
+		assertNotNull(find(contextMenu, SUBFOLDERS_LABEL), labels(contextMenu));
 	}
 
 	private Menu openContextMenuOn(Object element) throws Exception {
@@ -151,12 +141,5 @@ class SourceMenuTest {
 			Thread.sleep(20);
 		}
 		processEvents();
-	}
-
-	private String read(String path) throws Exception {
-		IFile file = project.getProject().getFile("src/" + path);
-		try (var in = file.getContents()) {
-			return new String(in.readAllBytes(), StandardCharsets.UTF_8);
-		}
 	}
 }

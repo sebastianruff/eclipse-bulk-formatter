@@ -4,15 +4,29 @@
 
 [![Build](https://github.com/sebastianruff/eclipse-bulk-formatter/actions/workflows/build.yml/badge.svg)](https://github.com/sebastianruff/eclipse-bulk-formatter/actions/workflows/build.yml)
 
-Eclipse's built-in *Source > Format* on a package only formats the files directly inside that package,
-not its subpackages. This plugin adds **Source > Format (incl. Subpackages)** to the context menu of
-packages in the Package Explorer: it formats the selected packages and all of their subpackages
-(within the same source folder).
+Eclipse's built-in *Source > Format* on a package only formats the Java files directly inside that
+package – not its subpackages and not any other file type. This plugin formats **all files** of a
+package, folder or project **including all subpackages and subfolders**, each with the formatter
+Eclipse would use for it:
 
-- Uses the project's formatter settings (project-specific settings or workspace default), just like *Source > Format*.
+- **Source > Format (incl. Subpackages)** in the context menu of packages
+- **Format (incl. Subfolders)** in the context menu of folders, source folders and projects
+
+| Files | Formatted with |
+|---|---|
+| Java | the project's Java formatter settings (like *Source > Format*) |
+| XML, HTML, CSS, JSP, … | the formatter of their editor, e.g. Eclipse Web Tools (WTP) |
+| JSON, YAML, JavaScript, TypeScript, SCSS, XSD, … | their language server, e.g. Wild Web Developer (LSP4E) |
+| anything else with a formatting editor or language server | that editor / language server |
+
+Files without a formatter (plain text, Markdown, `.properties`, binary files, …) are skipped.
+Which file types are supported depends on the plugins installed in your Eclipse.
+
 - Runs immediately in the background without confirmation; only errors are shown.
 - Files that are already formatted are left untouched.
 - Files open in an editor with unsaved changes are formatted in the editor but not saved.
+- Skips derived resources, output folders, `node_modules` and dot-files/-folders (`.git`, `.settings`, …).
+- Formatting via an editor briefly opens that editor in the background.
 
 ## Install
 
