@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Format incl. Subpackages
+Bundle-SymbolicName: io.github.sebastianruff.bulkformatter;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Sebastian Ruff
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: io.github.sebastianruff.bulkformatter
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.jdt.core,
+ org.eclipse.text,
+ org.eclipse.ui
+Export-Package: io.github.sebastianruff.bulkformatter
+Bundle-License: EPL-2.0;link="https://www.eclipse.org/legal/epl-2.0/"

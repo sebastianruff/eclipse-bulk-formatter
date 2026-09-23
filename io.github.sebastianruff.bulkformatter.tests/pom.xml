@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.sebastianruff.bulkformatter</groupId>
+    <artifactId>bulkformatter-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>io.github.sebastianruff.bulkformatter.tests</artifactId>
+  <packaging>eclipse-test-plugin</packaging>
+
+  <properties>
+    <!-- SWT on macOS must run on the main thread -->
+    <ui.test.vmargs></ui.test.vmargs>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>macos</id>
+      <activation><os><family>mac</family></os></activation>
+      <properties><ui.test.vmargs>-XstartOnFirstThread</ui.test.vmargs></properties>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <configuration>
+          <useUIHarness>true</useUIHarness>
+          <argLine>${ui.test.vmargs}</argLine>
+          <useUIThread>true</useUIThread>
+          <application>org.eclipse.ui.ide.workbench</application>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <configuration>
+          <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <type>eclipse-plugin</type>
+                <id>org.eclipse.ui.ide.application</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+              <requirement>
+                <type>eclipse-feature</type>
+                <id>org.eclipse.jdt</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

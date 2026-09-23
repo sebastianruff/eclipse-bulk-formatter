@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="io.github.sebastianruff.bulkformatter.feature">
+      <category name="io.github.sebastianruff.bulkformatter"/>
+   </feature>
+   <category-def name="io.github.sebastianruff.bulkformatter" label="Format incl. Subpackages"/>
+</site>

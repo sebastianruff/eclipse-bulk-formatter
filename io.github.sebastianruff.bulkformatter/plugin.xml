@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.ui.commands">
+      <command
+            id="io.github.sebastianruff.bulkformatter.formatWithSubpackages"
+            name="Format (incl. Subpackages)"
+            description="Formats all Java files of the selected packages and their subpackages"
+            defaultHandler="io.github.sebastianruff.bulkformatter.FormatJavaFilesHandler">
+      </command>
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <!-- Placed in the JDT "Source" submenu, right after "Format". -->
+      <menuContribution locationURI="popup:org.eclipse.jdt.ui.source.menu?before=importGroup">
+         <command
+               commandId="io.github.sebastianruff.bulkformatter.formatWithSubpackages"
+               label="Format (incl. Subpackages)"
+               style="push">
+            <visibleWhen checkEnabled="false">
+               <with variable="activeMenuSelection">
+                  <and>
+                     <count value="+"/>
+                     <iterate operator="and">
+                        <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+</plugin>
