@@ -65,7 +65,7 @@ Import all projects via *File > Import > Existing Projects* into an Eclipse with
 
 ## Screenshots
 
-Except for `package-source-menu.png` (taken by hand, since the Source submenu only opens on real input),
+Except for `package-source-menu.png` (taken by hand in a real project, since the Source submenu only opens on real input),
 the images in `marketplace/screenshots` are generated with a real Eclipse (WTP and Wild Web Developer included)
 and a demo project:
 
