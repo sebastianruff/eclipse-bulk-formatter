@@ -30,12 +30,6 @@ Which file types are supported depends on the plugins installed in your Eclipse.
 
 ![Source > Format (incl. Subpackages) in the context menu of a package](marketplace/screenshots/package-source-menu.png)
 
-![Format (incl. Subfolders) in the context menu of a folder](marketplace/screenshots/folder-menu.png)
-
-| Before | After |
-|---|---|
-| ![before](marketplace/screenshots/editor-before.png) | ![after](marketplace/screenshots/editor-after.png) |
-
 ## Install
 
 In Eclipse, choose *Help > Install New Software…* and use this update site:
@@ -65,13 +59,10 @@ Import all projects via *File > Import > Existing Projects* into an Eclipse with
 
 ## Screenshots
 
-Except for `package-source-menu.png` (taken by hand in a real project, since the Source submenu only opens on real input),
-the images in `marketplace/screenshots` are generated with a real Eclipse (WTP and Wild Web Developer included)
-and a demo project:
-
-    mvn verify -Pscreenshots
-
-This opens an Eclipse window for a few seconds and needs the macOS permission for screen recording.
+`mvn verify -Pscreenshots` starts a real Eclipse (with WTP and Wild Web Developer) on a demo project and
+writes screenshots of the folder context menu and an editor before/after formatting to
+`marketplace/screenshots`. It opens an Eclipse window for a few seconds and needs the macOS permission
+for screen recording.
 
 ## License
 
