@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
-  <!-- Bulk Format: a package tree with a "{ ... }" code block per package -->
+  <!-- Deep Formatter: a package tree with a "{ ... }" code block per package -->
   <rect width="256" height="256" rx="44" fill="#1f2a44"/>
   <g fill="none" stroke="#5b6b8f" stroke-width="6" stroke-linecap="round">
     <path d="M58 86 V137 H92"/>

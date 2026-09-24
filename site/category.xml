@@ -3,5 +3,5 @@
    <feature id="io.github.sebastianruff.bulkformatter.feature">
       <category name="io.github.sebastianruff.bulkformatter"/>
    </feature>
-   <category-def name="io.github.sebastianruff.bulkformatter" label="Bulk Format (incl. Subfolders)"/>
+   <category-def name="io.github.sebastianruff.bulkformatter" label="Deep Formatter"/>
 </site>

@@ -36,8 +36,8 @@ jobs:
         run: |
           cp -r site/target/repository _site
           # zip the signed repository (Tycho's own zip is created before signing)
-          (cd _site && zip -qr ../bulk-format.zip .)
-          mv bulk-format.zip _site/
+          (cd _site && zip -qr ../deep-formatter.zip .)
+          mv deep-formatter.zip _site/
           cp .github/pages/index.html marketplace/logo.png signing-key.asc _site/
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
