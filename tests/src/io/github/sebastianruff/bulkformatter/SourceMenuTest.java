@@ -25,8 +25,8 @@ import org.junit.jupiter.api.Test;
 class SourceMenuTest {
 
 	private static final String UGLY = "package %s; public class %s{int   x;}";
-	private static final String SUBFOLDERS_LABEL = "Format (incl. Subfolders)";
-	private static final String SUBPACKAGES_LABEL = "Format (incl. Subpackages)";
+	private static final String FOLDER_LABEL = "Deep Format";
+	private static final String SUBPACKAGES_LABEL = "Deep Format (incl. Subpackages)";
 
 	private TestProject project;
 
@@ -59,6 +59,7 @@ class SourceMenuTest {
 		String[] items = labels(sourceMenu).split("\\|");
 		int formatIndex = java.util.Arrays.asList(items).indexOf("Format");
 		assertEquals(SUBPACKAGES_LABEL, items[formatIndex + 1], "entry should follow Format: " + labels(sourceMenu));
+		assertNotNull(entry.getImage(), "entry should have an icon");
 
 		entry.notifyListeners(SWT.Selection, new Event());
 		waitForJobs();
@@ -68,23 +69,27 @@ class SourceMenuTest {
 	}
 
 	@Test
-	void subfoldersEntryFormatsPlainFolders() throws Exception {
+	void folderEntryFormatsPlainFolders() throws Exception {
 		Menu contextMenu = openContextMenuOn(project.project().getFolder("web"));
-		MenuItem entry = find(contextMenu, SUBFOLDERS_LABEL);
+		MenuItem entry = find(contextMenu, FOLDER_LABEL);
 		assertNotNull(entry, "entry missing: " + labels(contextMenu));
+		assertNotNull(entry.getImage(), "entry should have an icon");
 		entry.notifyListeners(SWT.Selection, new Event());
 		waitForJobs();
 		assertEquals("PAGE", project.read("web/page.edtest"));
 	}
 
 	@Test
-	void subpackagesEntryIsHiddenForSourceFolders() throws Exception {
+	void sourceFolderHasDeepFormatRightAfterFormat() throws Exception {
 		Menu contextMenu = openContextMenuOn(project.src);
 		MenuItem source = find(contextMenu, "Source");
 		assertNotNull(source, "Source submenu missing: " + labels(contextMenu));
 		show(source.getMenu());
+		String[] items = labels(source.getMenu()).split("\\|");
+		int formatIndex = java.util.Arrays.asList(items).indexOf("Format");
+		assertEquals(FOLDER_LABEL, items[formatIndex + 1], "entry should follow Format: " + labels(source.getMenu()));
 		assertNull(find(source.getMenu(), SUBPACKAGES_LABEL), labels(source.getMenu()));
-		assertNotNull(find(contextMenu, SUBFOLDERS_LABEL), labels(contextMenu));
+		assertNotNull(find(contextMenu, FOLDER_LABEL), labels(contextMenu));
 	}
 
 	private Menu openContextMenuOn(Object element) throws Exception {

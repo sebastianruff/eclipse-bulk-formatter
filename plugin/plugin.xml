@@ -4,55 +4,151 @@
    <extension point="org.eclipse.ui.commands">
       <command
             id="io.github.sebastianruff.bulkformatter.formatAll"
-            name="Format (incl. Subfolders)"
-            description="Formats all files of the selection including subpackages and subfolders"
+            name="Deep Format"
+            description="Formats all files of the selection including subpackages and subfolders, each with the formatter Eclipse uses for it"
             defaultHandler="io.github.sebastianruff.bulkformatter.FormatFilesHandler">
       </command>
    </extension>
 
+   <extension point="org.eclipse.ui.commandImages">
+      <image
+            commandId="io.github.sebastianruff.bulkformatter.formatAll"
+            icon="icons/deep-format.png">
+      </image>
+   </extension>
+
+   <extension point="org.eclipse.core.expressions.definitions">
+      <!-- every selected element is a Java package -->
+      <definition id="io.github.sebastianruff.bulkformatter.packages">
+         <with variable="activeMenuSelection">
+            <and>
+               <count value="+"/>
+               <iterate operator="and">
+                  <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+               </iterate>
+            </and>
+         </with>
+      </definition>
+      <!-- every selected element is a source folder or Java project -->
+      <definition id="io.github.sebastianruff.bulkformatter.javaContainers">
+         <with variable="activeMenuSelection">
+            <and>
+               <count value="+"/>
+               <iterate operator="and">
+                  <or>
+                     <instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+                     <instanceof value="org.eclipse.jdt.core.IJavaProject"/>
+                  </or>
+               </iterate>
+            </and>
+         </with>
+      </definition>
+      <!-- every selected element is a folder or project (but not a package) -->
+      <definition id="io.github.sebastianruff.bulkformatter.containers">
+         <with variable="activeMenuSelection">
+            <and>
+               <count value="+"/>
+               <iterate operator="and">
+                  <not>
+                     <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+                  </not>
+                  <adapt type="org.eclipse.core.resources.IResource">
+                     <or>
+                        <instanceof value="org.eclipse.core.resources.IFolder"/>
+                        <instanceof value="org.eclipse.core.resources.IProject"/>
+                     </or>
+                  </adapt>
+               </iterate>
+            </and>
+         </with>
+      </definition>
+      <!-- every selected element is a plain folder or project object (not a Java element); WTP shows its
+           Source > Format only for these -->
+      <definition id="io.github.sebastianruff.bulkformatter.resourceContainers">
+         <with variable="activeMenuSelection">
+            <and>
+               <count value="+"/>
+               <iterate operator="and">
+                  <or>
+                     <instanceof value="org.eclipse.core.resources.IFolder"/>
+                     <instanceof value="org.eclipse.core.resources.IProject"/>
+                  </or>
+               </iterate>
+            </and>
+         </with>
+      </definition>
+   </extension>
+
    <extension point="org.eclipse.ui.menus">
-      <!-- Packages: in the JDT "Source" submenu, right after "Format". -->
+      <!-- JDT "Source" submenu (packages, source folders, Java projects): right after "Format" -->
       <menuContribution locationURI="popup:org.eclipse.jdt.ui.source.menu?before=importGroup">
          <command
                commandId="io.github.sebastianruff.bulkformatter.formatAll"
-               label="Format (incl. Subpackages)"
+               id="io.github.sebastianruff.bulkformatter.jdtSource.packages"
+               label="Deep Format (incl. Subpackages)"
                style="push">
             <visibleWhen checkEnabled="false">
-               <with variable="activeMenuSelection">
-                  <and>
-                     <count value="+"/>
-                     <iterate operator="and">
-                        <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
-                     </iterate>
-                  </and>
-               </with>
+               <reference definitionId="io.github.sebastianruff.bulkformatter.packages"/>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="io.github.sebastianruff.bulkformatter.formatAll"
+               id="io.github.sebastianruff.bulkformatter.jdtSource.containers"
+               label="Deep Format"
+               style="push">
+            <visibleWhen checkEnabled="false">
+               <reference definitionId="io.github.sebastianruff.bulkformatter.javaContainers"/>
             </visibleWhen>
          </command>
       </menuContribution>
 
-      <!-- Folders, source folders and projects (Package Explorer, Project Explorer, ...). -->
+      <!-- Web Tools (WTP) "Source" submenu of folders and projects: right after its "Format" -->
+      <menuContribution locationURI="popup:sourceMenuId?after=sourceFormat">
+         <command
+               commandId="io.github.sebastianruff.bulkformatter.formatAll"
+               id="io.github.sebastianruff.bulkformatter.wtpSource.containers"
+               label="Deep Format"
+               style="push">
+            <visibleWhen checkEnabled="false">
+               <reference definitionId="io.github.sebastianruff.bulkformatter.resourceContainers"/>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+
+      <!-- LSP4E "Source" submenu: right after its "Format", which formats folders via language servers -->
+      <menuContribution locationURI="popup:org.eclipse.lsp4e.menu.source?after=org.eclipse.lsp4e.formatfile">
+         <command
+               commandId="io.github.sebastianruff.bulkformatter.formatAll"
+               id="io.github.sebastianruff.bulkformatter.lspSource.packages"
+               label="Deep Format (incl. Subpackages)"
+               style="push">
+            <visibleWhen checkEnabled="false">
+               <reference definitionId="io.github.sebastianruff.bulkformatter.packages"/>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="io.github.sebastianruff.bulkformatter.formatAll"
+               id="io.github.sebastianruff.bulkformatter.lspSource.containers"
+               label="Deep Format"
+               style="push">
+            <visibleWhen checkEnabled="false">
+               <or>
+                  <reference definitionId="io.github.sebastianruff.bulkformatter.javaContainers"/>
+                  <reference definitionId="io.github.sebastianruff.bulkformatter.containers"/>
+               </or>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+
+      <!-- Top level of the context menu of folders and projects, for views without a Source submenu -->
       <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <command
                commandId="io.github.sebastianruff.bulkformatter.formatAll"
-               label="Format (incl. Subfolders)"
+               id="io.github.sebastianruff.bulkformatter.topLevel"
+               label="Deep Format"
                style="push">
             <visibleWhen checkEnabled="false">
-               <with variable="activeMenuSelection">
-                  <and>
-                     <count value="+"/>
-                     <iterate operator="and">
-                        <not>
-                           <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
-                        </not>
-                        <adapt type="org.eclipse.core.resources.IResource">
-                           <or>
-                              <instanceof value="org.eclipse.core.resources.IFolder"/>
-                              <instanceof value="org.eclipse.core.resources.IProject"/>
-                           </or>
-                        </adapt>
-                     </iterate>
-                  </and>
-               </with>
+               <reference definitionId="io.github.sebastianruff.bulkformatter.containers"/>
             </visibleWhen>
          </command>
       </menuContribution>

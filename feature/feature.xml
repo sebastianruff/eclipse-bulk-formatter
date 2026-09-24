@@ -8,7 +8,7 @@
    <description url="https://github.com/sebastianruff/eclipse-bulk-formatter">
       Formats all files of a package, folder or project including subpackages and subfolders, each with
       the formatter Eclipse would use for it (Java, XML, HTML, CSS, JSON, YAML, JavaScript, ...).
-      Adds "Source > Format (incl. Subpackages)" to packages and "Format (incl. Subfolders)" to folders and projects.
+      Adds "Deep Format (incl. Subpackages)" to packages and "Deep Format" to folders and projects, right below "Source > Format".
    </description>
 
    <copyright>

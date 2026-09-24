@@ -59,7 +59,7 @@ public class FormatFilesHandler extends AbstractHandler {
 	 * able to save files while this job is running.
 	 */
 	private static Job createJob(Set<IFile> files) {
-		Job job = Job.create("Format (incl. Subfolders)", (IProgressMonitor monitor) -> {
+		Job job = Job.create("Deep Format", (IProgressMonitor monitor) -> {
 			try {
 				reportFailures(BulkFormatter.format(files, monitor));
 				return Status.OK_STATUS;

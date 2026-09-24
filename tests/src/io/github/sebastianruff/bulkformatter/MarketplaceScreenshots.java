@@ -57,7 +57,7 @@ class MarketplaceScreenshots {
 			IPackagesViewPart explorer = (IPackagesViewPart) page.showView(JavaUI.ID_PACKAGES);
 			settle(1500);
 
-			// 1: Format (incl. Subfolders) on a folder. (The Source submenu of packages can only be opened by real
+			// 1: Deep Format on a folder. (The Source submenu of packages can only be opened by real
 			// mouse/keyboard input, which would need the Accessibility permission, so there is no shot of it.)
 			IPackageFragment pkg = project.src.getPackageFragment("com.example.shop");
 			explorer.getTreeViewer().expandToLevel(project.src, 1);

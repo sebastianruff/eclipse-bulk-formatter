@@ -11,8 +11,11 @@ package – not its subpackages and not any other file type. This plugin formats
 package, folder or project **including all subpackages and subfolders**, each with the formatter
 Eclipse would use for it:
 
-- **Source > Format (incl. Subpackages)** in the context menu of packages
-- **Format (incl. Subfolders)** in the context menu of folders, source folders and projects
+- **Deep Format (incl. Subpackages)** for packages
+- **Deep Format** for folders, source folders and projects
+
+The entry appears right below every *Format* in the *Source* submenus of the context menu (from JDT, Web
+Tools and LSP4E) and, for folders and projects, also at the top level of the context menu.
 
 | Files | Formatted with |
 |---|---|
@@ -30,7 +33,7 @@ Which file types are supported depends on the plugins installed in your Eclipse.
 - Skips derived resources, output folders, `node_modules` and dot-files/-folders (`.git`, `.settings`, …).
 - Formatting via an editor briefly opens that editor in the background.
 
-![Source > Format (incl. Subpackages) in the context menu of a package](marketplace/screenshots/package-source-menu.png)
+![Source > Deep Format (incl. Subpackages) in the context menu of a package](marketplace/screenshots/package-source-menu.png)
 
 ## Install
 
